@@ -15,7 +15,7 @@ use Newestapps\Uploads\Models\FileOwner;
 abstract class UploadStrategy
 {
 
-    private $configs = [];
+    protected $configs = [];
 
     /** @return String */
     public abstract function getName();
@@ -111,8 +111,8 @@ abstract class UploadStrategy
     /**
      * Get the request input based on the given validation rules.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  array  $rules
+     * @param  \Illuminate\Http\Request $request
+     * @param  array $rules
      * @return array
      */
     protected function extractInputFromRules(Request $request, array $rules)

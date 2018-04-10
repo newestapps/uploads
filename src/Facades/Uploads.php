@@ -17,7 +17,6 @@ class Uploads
         return Route::prefix('api/uploads/')
             ->middleware(['auth:api', UploadsMiddleware::class])
             ->as('nw-uploads::')
-            ->namespace('Newestapps\Uploads\Http\Controllers')
             ->group(__DIR__.'/../../routes/nw-uploads.php');
     }
 
