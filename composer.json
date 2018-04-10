@@ -29,8 +29,7 @@
         },
         "files": [],
         "classmap": [
-            "database/migrations",
-            "database/seeds"
+            "database/migrations"
         ]
     },
     "require": {
