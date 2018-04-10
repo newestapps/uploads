@@ -1,6 +1,6 @@
 <?php
 
-namespace Newestapps\Http\Controllers;
+namespace Newestapps\Uploads\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -26,11 +26,10 @@ class UploadsController extends Controller
      */
     public function upload(Request $request, UploadStrategy $strategy, FileOwner $fileOwner)
     {
-        $this->validate();
         $files = $request->allFiles();
 
         $output = [
-            'input-count' => 0,
+            'input-count' => count($files),
             'failed' => 0,
             'success' => 0,
             'errors' => [],
@@ -38,9 +37,11 @@ class UploadsController extends Controller
 
         $initializations = [];
 
-        if (count($files) === 0 && $strategy !== null && $fileOwner !== null) {
+        if (count($files) > 0 && $strategy !== null && $fileOwner !== null) {
+
             foreach ($files as $file) {
                 /** @var UploadedFile $file */
+
 
                 if (!isset($initializations[get_class($strategy)])) {
                     try {
@@ -92,9 +93,11 @@ class UploadsController extends Controller
                 }
 
             }
+        } else {
+            $output['failed'] = $output['input-count'];
         }
 
-        return Newestapps::apiResponse($output, null, 200);
+        return Newestapps::apiResponse($output, null, ($output['success'] === 0) ? (400) : (200));
     }
 
 }

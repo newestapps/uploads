@@ -35,6 +35,14 @@ abstract class UploadStrategy
     }
 
     /**
+     * @return array
+     */
+    public function getConfigs(): array
+    {
+        return $this->configs;
+    }
+
+    /**
      * @param array $configs
      */
     public function setConfigs(array $configs): void

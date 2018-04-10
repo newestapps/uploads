@@ -27,14 +27,15 @@ class DefaultUploadStrategy extends UploadStrategy
      * @param array $config
      * @return String|void
      */
-    public function init(array $config = [])
+    public function init()
     {
         $allowedFilesystems = config('filesystems.disks');
         $allowedFilesystems = array_keys($allowedFilesystems);
 
+        $config = $this->getConfigs();
+
         if (!empty($config['driver']) && in_array($config['driver'], $allowedFilesystems)) {
             $this->storageFacade = Storage::disk($config['driver']);
-            dd($this->storageFacade);
         } else {
             throw new FilesystemNotFoundException($config['driver']);
         }
@@ -42,7 +43,7 @@ class DefaultUploadStrategy extends UploadStrategy
 
     public function preProcessor(Request $request, UploadedFile $uploadedFile)
     {
-        dd($uploadedFile);
+        return $uploadedFile;
     }
 
     /**
@@ -53,14 +54,10 @@ class DefaultUploadStrategy extends UploadStrategy
      */
     public function persistFile(UploadedFile $uploadedFile, FileOwner $fileOwner)
     {
-        $filename = Uuid::uuid4()->toString();
-
-        $file = $uploadedFile->storeAs(
-            $this->getConfig('path', storage_path('app/public/nw-uploads')),
-            $filename);
+        $file = $uploadedFile->storePublicly($this->getConfig('path'));
 
         $f = new File();
-        $f->stored_name = $filename;
+        $f->stored_name = $uploadedFile->hashName();
         $f->real_name = $uploadedFile->getClientOriginalName();
         $f->owner_type = $fileOwner->getOwnerType();
         $f->owner_id = $fileOwner->getOwnerId();
@@ -78,6 +75,6 @@ class DefaultUploadStrategy extends UploadStrategy
 
     public function postProcessor(File $file)
     {
-        
+
     }
 }

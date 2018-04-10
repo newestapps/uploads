@@ -1,6 +1,6 @@
 <?php
 
-namespace Newestapps\Uploads\Http\Middleware;
+namespace Newestapps\Uploads\Http\Middlewares;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
@@ -51,22 +51,20 @@ class UploadsMiddleware
                     $ownerId = $request->get('owner_id', null);
 
                     if (empty($ownerType) || empty($ownerId)) {
-                        if ($uploadedBy !== null) {
-                            $fileOwner = $uploadedBy;
-                        } else {
+                        if ($uploadedBy === null) {
                             throw new FileOwnerNotSpecifiedException();
                         }
                     } else {
                         if (empty($ownerType) || empty($ownerId) || !is_integer($ownerId) || empty($uploadedBy) || !($uploadedBy instanceof Model)) {
                             throw new InvalidFileOwnerException();
                         }
-
-                        $fileOwner = new FileOwner();
-                        $fileOwner->setUploadedByType(get_class($uploadedBy));
-                        $fileOwner->setUploadedById($uploadedBy->id);
-                        $fileOwner->setOwnerType($ownerType);
-                        $fileOwner->setOwnerId($ownerId);
                     }
+
+                    $fileOwner = new FileOwner();
+                    $fileOwner->setUploadedByType(get_class($uploadedBy));
+                    $fileOwner->setUploadedById($uploadedBy->id);
+                    $fileOwner->setOwnerType($ownerType);
+                    $fileOwner->setOwnerId($ownerId);
 
                     app()->instance(UploadStrategy::class, $instance);
                     app()->instance(FileOwner::class, $fileOwner);

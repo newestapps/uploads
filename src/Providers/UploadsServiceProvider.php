@@ -9,7 +9,7 @@ namespace Newestapps\Uploads\Providers;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Newestapps\Uploads\Http\Middleware\UploadsMiddleware;
+use Newestapps\Uploads\Http\Middlewares\UploadsMiddleware;
 
 class UploadsServiceProvider extends ServiceProvider
 {
@@ -39,17 +39,7 @@ class UploadsServiceProvider extends ServiceProvider
             __DIR__.'/../../config/nw-uploads.php' => config_path('nw-uploads.php'),
         ], 'config');
 
-        $this->registerRoutes();
+        \Newestapps\Uploads\Facades\Uploads::routes();
     }
-
-    private function registerRoutes()
-    {
-        Route::prefix('uploads/')
-            ->middleware([UploadsMiddleware::class])
-            ->as('nw-uploads::')
-            ->namespace('Newestapps\Uploads\Http\Controllers')
-            ->group(__DIR__.'/../../routes/nw-uploads.php');
-    }
-
 
 }

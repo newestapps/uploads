@@ -20,7 +20,7 @@ class FileOwner
      */
     public function getOwnerType()
     {
-        return $this->ownerType;
+        return (empty($this->ownerType)) ? ($this->uploadedByType) : ($this->ownerType);
     }
 
     /**
@@ -36,7 +36,7 @@ class FileOwner
      */
     public function getOwnerId()
     {
-        return $this->ownerId;
+        return (empty($this->ownerId)) ? ($this->uploadedById) : ($this->ownerId);
     }
 
     /**
