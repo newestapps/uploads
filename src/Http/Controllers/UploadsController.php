@@ -57,6 +57,8 @@ class UploadsController extends Controller
                     $output['errors'][$name] = [];
                 }
 
+                $validationFailed = false;
+
                 try {
                     $file = $strategy->preProcessor($request, $file);
 
@@ -72,24 +74,28 @@ class UploadsController extends Controller
                 } catch (ValidationException $validationException) {
                     $output['errors'][$name] = array_merge($output['errors'][$name], $validationException->errors());
                     $output['failed']++;
+                    $validationFailed = true;
                 } catch (\Exception $e) {
                     $output['failed']++;
                     $output['errors'][$name] = array_merge($output['errors'][$name], ['exception' => $e->getMessage()]);
+                    $validationFailed = true;
                 }
 
-                $persistedFile = null;
+                if(!$validationFailed){
+                    $persistedFile = null;
 
-                try {
-                    $persistedFile = $strategy->persistFile($file, $fileOwner);
-                    $output['success']++;
-                } catch (\Exception $e) {
-                    $output['failed']++;
-                    $output['errors'][$name] = array_merge($output['errors'][$name], ['exception' => $e->getMessage()]);
-                }
+                    try {
+                        $persistedFile = $strategy->persistFile($file, $fileOwner);
+                        $output['success']++;
+                    } catch (\Exception $e) {
+                        $output['failed']++;
+                        $output['errors'][$name] = array_merge($output['errors'][$name], ['exception' => $e->getMessage()]);
+                    }
 
-                if ($persistedFile instanceof File) {
-                    $strategy->postProcessor($persistedFile);
+                    if ($persistedFile instanceof File) {
+                        $strategy->postProcessor($persistedFile);
 //                    $s = ((count($output['success']) === 1) ? ('') : ('s'));
+                    }
                 }
 
             }

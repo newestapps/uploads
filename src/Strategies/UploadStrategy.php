@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Newestapps\Uploads\Models\File;
 use Newestapps\Uploads\Models\FileOwner;
+use Psy\Util\Str;
 
 abstract class UploadStrategy
 {
@@ -118,7 +119,7 @@ abstract class UploadStrategy
     protected function extractInputFromRules(Request $request, array $rules)
     {
         return $request->only(collect($rules)->keys()->map(function ($rule) {
-            return Str::contains($rule, '.') ? explode('.', $rule)[0] : $rule;
+            return \Illuminate\Support\Str::contains($rule, '.') ? explode('.', $rule)[0] : $rule;
         })->unique()->toArray());
     }
 

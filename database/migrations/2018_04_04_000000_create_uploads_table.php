@@ -30,11 +30,13 @@ class CreateUploadsTable extends Migration
                 $table->nullableMorphs('uploaded_by');
                 $table->nullableMorphs('owner');
                 $table->bigInteger('size');
-                $table->string('real_name');
+                $table->string('real_name', 50);
                 $table->string('stored_name');
                 $table->string('strategy');
                 $table->string('path');
-                $table->string('mimes');
+                $table->string('mimes', 40);
+                $table->string('extension', 10);
+                $table->string('url', 255);
                 $table->timestamps();
             });
         }

@@ -55,7 +55,7 @@ class UploadsMiddleware
                             throw new FileOwnerNotSpecifiedException();
                         }
                     } else {
-                        if (empty($ownerType) || empty($ownerId) || !is_integer($ownerId) || empty($uploadedBy) || !($uploadedBy instanceof Model)) {
+                        if (empty($ownerType) || empty($ownerId) || !is_numeric($ownerId) || empty($uploadedBy) || !($uploadedBy instanceof Model)) {
                             throw new InvalidFileOwnerException();
                         }
                     }
