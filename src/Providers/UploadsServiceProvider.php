@@ -4,13 +4,13 @@
  *   with PhpStorm
  */
 
-namespace Newestapps\Package\Providers;
+namespace Newestapps\Uploads\Providers;
 
 use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Newestapps\Uploads\Http\Middleware\UploadsMiddleware;
 
-class NewestappsServiceProvider extends ServiceProvider
+class UploadsServiceProvider extends ServiceProvider
 {
 
     /**
@@ -29,24 +29,25 @@ class NewestappsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../../config/package.php', 'package');
+        $this->mergeConfigFrom(__DIR__.'/../../config/nw-uploads.php', 'nw-uploads');
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
         $this->app->make(Factory::class)->load(__DIR__.'/../../database/factories.php');
 
         $this->publishes([
-            __DIR__.'/../../config/package.php' => config_path('package.php'),
+            __DIR__.'/../../config/nw-uploads.php' => config_path('nw-uploads.php'),
         ], 'config');
 
-//        $this->registerRoutes();
+        $this->registerRoutes();
     }
 
     private function registerRoutes()
     {
-//        Route::prefix('...')
-//            ->middleware('some-middleware')
-//            ->namespace('Newestapps\Package\Http\Controllers')
-//            ->group(__DIR__.'/../../routes/package-routes.php');
+        Route::prefix('uploads/')
+            ->middleware([UploadsMiddleware::class])
+            ->as('nw-uploads::')
+            ->namespace('Newestapps\Uploads\Http\Controllers')
+            ->group(__DIR__.'/../../routes/nw-uploads.php');
     }
 
 

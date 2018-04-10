@@ -1,7 +1,7 @@
 {
-    "name": "newestapps/package-kit",
+    "name": "newestapps/uploads",
     "version": "1.0.0",
-    "description": "Newestapps Package development kit",
+    "description": "Newestapps file uploades",
     "homepage": "https://newestapps.com.br",
     "license": "proprietary",
     "minimum-stability": "dev",
@@ -21,11 +21,11 @@
         }
     ],
     "support": {
-        "email" : "contato@newestapps.com.br"
+        "email": "contato@newestapps.com.br"
     },
     "autoload": {
         "psr-4": {
-            "Newestapps\\Package\\": "./src/"
+            "Newestapps\\Uploads\\": "./src/"
         },
         "files": [],
         "classmap": [
@@ -37,11 +37,11 @@
         "php": ">=7.1.0",
         "laravel/framework": ">=5.5.32",
         "newestapps/core": "dev-master"
-    }
+    },
     "extra": {
         "laravel": {
             "providers": [
-                "Newestapps\\Package\\Providers\\PackageServiceProvider"
+                "Newestapps\\Uploads\\Providers\\UploadsServiceProvider"
             ],
             "aliases": {
             }
