@@ -7,6 +7,7 @@
 namespace Newestapps\Uploads\Providers;
 
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Newestapps\Uploads\Http\Middleware\UploadsMiddleware;
 
