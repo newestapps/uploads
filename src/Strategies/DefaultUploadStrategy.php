@@ -67,7 +67,7 @@ class DefaultUploadStrategy extends UploadStrategy
         $f->strategy = $this->getName();
         $f->path = $file;
         $f->extension = $uploadedFile->extension();
-        $f->url = url(str_replace('public/', '', $this->configs['path']).$f->stored_name);
+        $f->url = url(str_replace('public/', 'storage/', $this->configs['path']).$f->stored_name);
         $f->mimes = $uploadedFile->getMimeType();
 
         $f->saveOrFail();
